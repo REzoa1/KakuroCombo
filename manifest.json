@@ -1,10 +1,10 @@
 {
-    "name": "Kakuro Combos",
-    "short_name": "Kakuro",
-    "description": "Подбор комбинаций для Какуро",
-    "start_url": ".",
-    "display": "standalone",
-    "theme_color": "#0a0c10",
-    "background_color": "#0a0c10",
-    "icons": []
+  "name": "Kakuro Combos",
+  "short_name": "Kakuro",
+  "description": "Подбор комбинаций для Какуро",
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#0a0c10",
+  "background_color": "#0a0c10",
+  "icons": []
 }

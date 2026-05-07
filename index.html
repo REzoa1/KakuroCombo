@@ -1,67 +1,152 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Kakuro · комбинатор</title>
-    <meta name="description" content="Подбор комбинаций для Какуро с фильтром по известным цифрам">
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#0a0c10">
-    <link rel="stylesheet" href="style.css">
-</head>
+    <title>Калькулятор Какуро — подбор комбинаций цифр онлайн</title>
+    <meta
+      name="description"
+      content="Бесплатный инструмент для решения головоломок Какуро. Введите сумму и количество клеток — получите все возможные комбинации цифр 1–9 без повторений."
+    />
+    <meta
+      name="keywords"
+      content="какуро, калькулятор какуро, комбинации какуро, решение какуро, kakuro, kakuro solver, kakuro combinations"
+    />
 
-<body>
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#0a0c10" />
+    <link rel="stylesheet" href="style.css" />
 
+    <!-- Schema.org разметка для поисковиков -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Kakuro Combos",
+        "description": "Бесплатный инструмент для решения головоломок Какуро. Введите сумму и количество клеток — получите все возможные комбинации цифр 1–9 без повторений.",
+        "applicationCategory": "Game",
+        "operatingSystem": "Any",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "featureList": "Поиск комбинаций по сумме и количеству клеток, фильтр по известным цифрам, выделение вариантов кликом"
+      }
+    </script>
+
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+      (function (m, e, t, r, i, k, a) {
+        m[i] =
+          m[i] ||
+          function () {
+            (m[i].a = m[i].a || []).push(arguments);
+          };
+        m[i].l = 1 * new Date();
+        for (var j = 0; j < document.scripts.length; j++) {
+          if (document.scripts[j].src === r) {
+            return;
+          }
+        }
+        ((k = e.createElement(t)),
+          (a = e.getElementsByTagName(t)[0]),
+          (k.async = 1),
+          (k.src = r),
+          a.parentNode.insertBefore(k, a));
+      })(
+        window,
+        document,
+        "script",
+        "https://mc.yandex.ru/metrika/tag.js?id=109109155",
+        "ym",
+      );
+
+      ym(109109155, "init", {
+        ssr: true,
+        webvisor: true,
+        clickmap: true,
+        ecommerce: "dataLayer",
+        referrer: document.referrer,
+        url: location.href,
+        accurateTrackBounce: true,
+        trackLinks: true,
+      });
+    </script>
+    <noscript
+      ><div>
+        <img
+          src="https://mc.yandex.ru/watch/109109155"
+          style="position: absolute; left: -9999px"
+          alt=""
+        /></div
+    ></noscript>
+    <!-- /Yandex.Metrika counter -->
+  </head>
+
+  <body>
     <div class="kakuro">
-        <div class="hero">
-            <h1>✦ kakuro combos</h1>
-            <p>комбинации цифр 1–9 без повторений</p>
+      <div class="hero">
+        <h1>✦ kakuro combos</h1>
+        <p>комбинации цифр 1–9 без повторений</p>
+      </div>
+
+      <div class="panel">
+        <div class="controls">
+          <div class="control">
+            <label>сумма</label>
+            <input
+              type="text"
+              id="sumInput"
+              placeholder="14"
+              inputmode="numeric"
+              value="14"
+            />
+          </div>
+          <div class="control">
+            <label>клеток</label>
+            <input
+              type="text"
+              id="cellsInput"
+              placeholder="3"
+              inputmode="numeric"
+              value="3"
+            />
+          </div>
         </div>
 
-        <div class="panel">
-            <div class="controls">
-                <div class="control">
-                    <label>сумма</label>
-                    <input type="text" id="sumInput" placeholder="14" inputmode="numeric" value="14">
-                </div>
-                <div class="control">
-                    <label>клеток</label>
-                    <input type="text" id="cellsInput" placeholder="3" inputmode="numeric" value="3">
-                </div>
-            </div>
-
-            <div class="result-section">
-                <div class="badge">✧ возможные варианты</div>
-                <div id="comboList" class="combo-grid"></div>
-            </div>
-
-            <div class="filter-section">
-                <div class="filter-header">
-                    <span class="filter-label">фильтр по цифрам</span>
-                    <span class="filter-hint">кликните ещё раз, чтобы снять</span>
-                </div>
-                <div class="digits-panel" id="digitsPanel">
-                    <button type="button" class="digit-btn" data-digit="1">1</button>
-                    <button type="button" class="digit-btn" data-digit="2">2</button>
-                    <button type="button" class="digit-btn" data-digit="3">3</button>
-                    <button type="button" class="digit-btn" data-digit="4">4</button>
-                    <button type="button" class="digit-btn" data-digit="5">5</button>
-                    <button type="button" class="digit-btn" data-digit="6">6</button>
-                    <button type="button" class="digit-btn" data-digit="7">7</button>
-                    <button type="button" class="digit-btn" data-digit="8">8</button>
-                    <button type="button" class="digit-btn" data-digit="9">9</button>
-                </div>
-            </div>
-
-            <div id="rangeInfo" class="info-hint"></div>
+        <div class="result-section">
+          <div class="badge">✧ возможные варианты</div>
+          <div id="comboList" class="combo-grid"></div>
         </div>
-        <footer>
-            pwa ready · офлайн · для какуро
-        </footer>
+
+        <div class="filter-section">
+          <div class="filter-header">
+            <span class="filter-label">фильтр по цифрам</span>
+            <span class="filter-hint">кликните ещё раз, чтобы снять</span>
+          </div>
+          <div class="digits-panel" id="digitsPanel">
+            <button type="button" class="digit-btn" data-digit="1">1</button>
+            <button type="button" class="digit-btn" data-digit="2">2</button>
+            <button type="button" class="digit-btn" data-digit="3">3</button>
+            <button type="button" class="digit-btn" data-digit="4">4</button>
+            <button type="button" class="digit-btn" data-digit="5">5</button>
+            <button type="button" class="digit-btn" data-digit="6">6</button>
+            <button type="button" class="digit-btn" data-digit="7">7</button>
+            <button type="button" class="digit-btn" data-digit="8">8</button>
+            <button type="button" class="digit-btn" data-digit="9">9</button>
+          </div>
+        </div>
+
+        <div id="rangeInfo" class="info-hint"></div>
+      </div>
+      <footer>pwa ready · офлайн · для какуро</footer>
     </div>
 
     <script src="script.js"></script>
-</body>
-
+  </body>
 </html>
