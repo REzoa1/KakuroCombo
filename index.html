@@ -4,366 +4,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Калькулятор комбинаций для Какуро</title>
-    <meta name="description"
-        content="Быстрый поиск комбинаций цифр для головоломок Какуро. Введите сумму и количество ячеек.">
+    <title>Kakuro · комбинатор</title>
+    <meta name="description" content="Подбор комбинаций для Какуро с фильтром по известным цифрам">
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#2c3e50">
-    <style>
-        * {
-            box-sizing: border-box;
-            user-select: none;
-            /* для лучшего UX на тач-устройствах */
-        }
-
-        body {
-            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-            background: #f0f2f5;
-            margin: 0;
-            padding: 20px;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .container {
-            max-width: 650px;
-            width: 100%;
-            margin: auto;
-            background: white;
-            border-radius: 40px;
-            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            transition: all 0.2s ease;
-        }
-
-        .header {
-            background: #2c3e50;
-            color: white;
-            padding: 1.5rem 1.8rem;
-            text-align: center;
-        }
-
-        .header h1 {
-            margin: 0;
-            font-size: 1.8rem;
-            font-weight: 600;
-            letter-spacing: -0.3px;
-        }
-
-        .header p {
-            margin: 0.5rem 0 0;
-            opacity: 0.8;
-            font-size: 0.95rem;
-        }
-
-        .card {
-            padding: 1.8rem;
-        }
-
-        .input-group {
-            margin-bottom: 1.8rem;
-        }
-
-        label {
-            display: block;
-            font-weight: 600;
-            color: #1e293b;
-            margin-bottom: 0.5rem;
-            font-size: 0.95rem;
-        }
-
-        .input-field {
-            width: 100%;
-            padding: 1rem;
-            font-size: 1.3rem;
-            text-align: center;
-            border: 2px solid #e2e8f0;
-            border-radius: 28px;
-            background: #f8fafc;
-            transition: 0.2s;
-            font-weight: 500;
-            font-family: monospace;
-        }
-
-        .input-field:focus {
-            border-color: #3b82f6;
-            outline: none;
-            background: white;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
-        }
-
-        .row-2cols {
-            display: flex;
-            gap: 1.2rem;
-            flex-wrap: wrap;
-        }
-
-        .row-2cols .input-group {
-            flex: 1;
-            min-width: 130px;
-        }
-
-        button {
-            width: 100%;
-            padding: 1rem;
-            background: #2c3e50;
-            color: white;
-            font-weight: bold;
-            font-size: 1.1rem;
-            border: none;
-            border-radius: 60px;
-            cursor: pointer;
-            transition: 0.2s;
-            margin-top: 0.5rem;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-        }
-
-        button:hover {
-            background: #1e2a36;
-            transform: scale(0.98);
-        }
-
-        button:active {
-            transform: scale(0.96);
-        }
-
-        .result {
-            background: #f1f5f9;
-            border-radius: 28px;
-            padding: 1rem 1.5rem;
-            margin-top: 2rem;
-            text-align: center;
-            transition: 0.1s;
-        }
-
-        .result h3 {
-            margin: 0 0 0.5rem;
-            font-size: 1.25rem;
-            color: #0f172a;
-        }
-
-        .combo-list {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 0.8rem;
-            margin: 1rem 0;
-        }
-
-        .combo-chip {
-            background: white;
-            border-radius: 60px;
-            padding: 0.5rem 1.2rem;
-            font-family: 'Courier New', monospace;
-            font-weight: bold;
-            font-size: 1.1rem;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            color: #0f172a;
-            border-left: 4px solid #3b82f6;
-        }
-
-        .no-results {
-            color: #dc2626;
-            background: #fee2e2;
-            padding: 0.8rem;
-            border-radius: 60px;
-            font-weight: 500;
-        }
-
-        .info-tip {
-            font-size: 0.8rem;
-            color: #475569;
-            text-align: center;
-            margin-top: 1.2rem;
-            border-top: 1px solid #e2e8f0;
-            padding-top: 1rem;
-        }
-
-        footer {
-            text-align: center;
-            font-size: 0.7rem;
-            color: #94a3b8;
-            padding: 1rem;
-            background: #f9f9fc;
-        }
-
-        @media (max-width: 500px) {
-            body {
-                padding: 12px;
-            }
-
-            .card {
-                padding: 1.2rem;
-            }
-
-            .combo-chip {
-                font-size: 0.9rem;
-                padding: 0.4rem 1rem;
-            }
-
-            .input-field {
-                font-size: 1.1rem;
-                padding: 0.8rem;
-            }
-        }
-    </style>
+    <meta name="theme-color" content="#0a0c10">
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>🔢 Какуро Комбо</h1>
-            <p>Найди все уникальные комбинации для суммы</p>
-        </div>
-        <div class="card">
-            <div class="row-2cols">
-                <div class="input-group">
-                    <label>📊 Сумма (3–45)</label>
-                    <input type="number" id="sumInput" class="input-field" placeholder="например 14" min="3" max="45"
-                        value="14">
-                </div>
-                <div class="input-group">
-                    <label>🧩 Количество клеток</label>
-                    <input type="number" id="cellsInput" class="input-field" placeholder="2-9" min="2" max="9"
-                        value="3">
-                </div>
-            </div>
-            <button id="findBtn">✨ Найти комбинации ✨</button>
 
-            <div id="resultArea" class="result">
-                <h3>💡 Результат</h3>
-                <div id="combinationsContainer">Введите сумму и кол-во клеток</div>
+    <div class="kakuro">
+        <div class="hero">
+            <h1>✦ kakuro combos</h1>
+            <p>комбинации цифр 1–9 без повторений</p>
+        </div>
+
+        <div class="panel">
+            <div class="controls">
+                <div class="control">
+                    <label>сумма</label>
+                    <input type="text" id="sumInput" placeholder="14" inputmode="numeric" value="14">
+                </div>
+                <div class="control">
+                    <label>клеток</label>
+                    <input type="text" id="cellsInput" placeholder="3" inputmode="numeric" value="3">
+                </div>
             </div>
-            <div class="info-tip">
-                ⚡ Цифры от 1 до 9, без повторов. Голубые комбинации в оригинальной таблице — уникальные.
+
+            <!-- НОВЫЙ БЛОК ФИЛЬТРАЦИИ -->
+            <div class="filter-section">
+                <div class="filter-header">
+                    <span class="filter-label">фильтр по цифрам</span>
+                    <span class="filter-hint">⏎ кликните ещё раз, чтобы снять</span>
+                </div>
+                <div class="digits-panel" id="digitsPanel">
+                    <button type="button" class="digit-btn" data-digit="1">1</button>
+                    <button type="button" class="digit-btn" data-digit="2">2</button>
+                    <button type="button" class="digit-btn" data-digit="3">3</button>
+                    <button type="button" class="digit-btn" data-digit="4">4</button>
+                    <button type="button" class="digit-btn" data-digit="5">5</button>
+                    <button type="button" class="digit-btn" data-digit="6">6</button>
+                    <button type="button" class="digit-btn" data-digit="7">7</button>
+                    <button type="button" class="digit-btn" data-digit="8">8</button>
+                    <button type="button" class="digit-btn" data-digit="9">9</button>
+                </div>
+            </div>
+
+            <div class="result-section">
+                <div class="badge">✧ возможные варианты</div>
+                <div id="comboList" class="combo-grid"></div>
+                <div id="rangeInfo" class="info-hint"></div>
             </div>
         </div>
         <footer>
-            📱 Работает офлайн • PWA ready • Для Kakuro
+            pwa ready · офлайн · для какуро
         </footer>
     </div>
 
-    <script>
-        // --------------------------------------------------------------
-        // 1. ГЕНЕРАЦИЯ КОМБИНАЦИЙ (из классической таблицы Kakuro)
-        // --------------------------------------------------------------
-        function generateAllCombinations() {
-            // Храним: key = "cells:sum" -> массив комбинаций (массивы чисел)
-            const combinationsMap = new Map();
-
-            // Все цифры с 1 по 9
-            const digits = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-
-            // Перебираем длину комбинаций от 2 до 9 клеток
-            for (let k = 2; k <= 9; k++) {
-                // Рекурсивный backtracking для комбинаций длины k
-                function backtrack(start, currentComb) {
-                    if (currentComb.length === k) {
-                        const sum = currentComb.reduce((a, b) => a + b, 0);
-                        const key = `${k}:${sum}`;
-                        if (!combinationsMap.has(key)) {
-                            combinationsMap.set(key, []);
-                        }
-                        // сохраним копию комбинации
-                        combinationsMap.get(key).push([...currentComb]);
-                        return;
-                    }
-                    for (let i = start; i <= 9; i++) {
-                        currentComb.push(i);
-                        backtrack(i + 1, currentComb);
-                        currentComb.pop();
-                    }
-                }
-                backtrack(1, []);
-            }
-
-            // Ручная калибровка: для 1 клетки (хотя в какуро 2+ клетки, но добавим для полноты)
-            for (let n = 1; n <= 9; n++) {
-                const key = `1:${n}`;
-                combinationsMap.set(key, [[n]]);
-            }
-
-            return combinationsMap;
-        }
-
-        const combosDB = generateAllCombinations();
-
-        // Функция получения комбинаций (возвращает массив строк вида "1+2+3")
-        function getCombinations(sum, cells) {
-            if (cells < 1 || cells > 9) return [];
-            if (sum < (cells * (cells + 1)) / 2) return []; // минимальная возможная сумма 1+2+...+cells
-            if (sum > (cells * (19 - cells)) / 2) return []; // максимальная сумма для cells: 9+8+... 
-
-            const key = `${cells}:${sum}`;
-            const combos = combosDB.get(key) || [];
-            // Превращаем массивы в читаемый вид и сортируем ради эстетики
-            return combos.map(arr => arr.join('+')).sort();
-        }
-
-        // Обновление UI
-        function updateCombinations() {
-            const sumInput = document.getElementById('sumInput');
-            const cellsInput = document.getElementById('cellsInput');
-            const resultContainer = document.getElementById('combinationsContainer');
-
-            let sum = parseInt(sumInput.value);
-            let cells = parseInt(cellsInput.value);
-
-            // Валидация
-            if (isNaN(sum)) sum = 14;
-            if (isNaN(cells)) cells = 3;
-
-            // Ограничения
-            sum = Math.min(45, Math.max(3, sum));
-            cells = Math.min(9, Math.max(2, cells));
-
-            sumInput.value = sum;
-            cellsInput.value = cells;
-
-            const combos = getCombinations(sum, cells);
-
-            if (combos.length === 0) {
-                resultContainer.innerHTML = `<div class="no-results">❌ Нет комбинаций для ${sum} и ${cells} клеток.<br> 
-            (мин сумма: ${cells * (cells + 1) / 2}, макс: ${cells * (19 - cells) / 2})</div>`;
-                return;
-            }
-
-            // Создаём красивые чипсы
-            let html = `<div class="combo-list">`;
-            combos.forEach(combo => {
-                html += `<div class="combo-chip">${combo}</div>`;
-            });
-            html += `</div><div style="margin-top:0.8rem; font-size:0.85rem;">✅ Найдено ${combos.length} комбинаций</div>`;
-            resultContainer.innerHTML = html;
-        }
-
-        // Обработчики событий + живой поиск при изменении
-        const findBtn = document.getElementById('findBtn');
-        const sumInput = document.getElementById('sumInput');
-        const cellsInput = document.getElementById('cellsInput');
-
-        findBtn.addEventListener('click', updateCombinations);
-        sumInput.addEventListener('input', updateCombinations);
-        cellsInput.addEventListener('input', updateCombinations);
-
-        // Запуск при загрузке
-        updateCombinations();
-
-        // ----------------------------------------------------
-        // 2. PWA (Service Worker) — добавляем офлайн-кеширование
-        // ----------------------------------------------------
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js').then(reg => {
-                    console.log('✅ SW registered: ', reg);
-                }).catch(err => {
-                    console.log('❌ SW registration failed: ', err);
-                });
-            });
-        }
-    </script>
+    <script src="script.js"></script>
 </body>
 
 </html>
